@@ -18,11 +18,13 @@ enum TencentRetCode {
 };
 
 @interface TencentKitPlugin () <TencentSessionDelegate, QQApiInterfaceDelegate>
-
+// yangpan modify
+@property (nonatomic,strong) FlutterMethodChannel *_channel;
 @end
 
 @implementation TencentKitPlugin {
-    FlutterMethodChannel *_channel;
+// yangpan modify
+    // FlutterMethodChannel *_channel;
     TencentOAuth *_oauth;
 }
 
@@ -30,10 +32,24 @@ enum TencentRetCode {
     FlutterMethodChannel *channel =
         [FlutterMethodChannel methodChannelWithName:@"v7lin.github.io/tencent_kit"
                                     binaryMessenger:[registrar messenger]];
-    TencentKitPlugin *instance =
-        [[TencentKitPlugin alloc] initWithChannel:channel];
+// yangpan modify
+    // TencentKitPlugin *instance =
+    //     [[TencentKitPlugin alloc] initWithChannel:channel];
+    TencentKitPlugin *instance = [self.class sharedInstance];
+    instance._channel = channel;
     [registrar addApplicationDelegate:instance];
     [registrar addMethodCallDelegate:instance channel:channel];
+}
+
+// yangpan modify
++ (instancetype)sharedInstance{
+    static id _instance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _instance = [self.class new];
+    });
+    
+    return _instance;
 }
 
 static NSString *const METHOD_REGISTERAPP = @"registerApp";
@@ -73,13 +89,14 @@ static NSString *const ARGUMENT_KEY_RESULT_CREATE_AT = @"create_at";
 
 static NSString *const SCHEME_FILE = @"file";
 
-- (instancetype)initWithChannel:(FlutterMethodChannel *)channel {
-    self = [super init];
-    if (self) {
-        _channel = channel;
-    }
-    return self;
-}
+// yangpan modify
+// - (instancetype)initWithChannel:(FlutterMethodChannel *)channel {
+//     self = [super init];
+//     if (self) {
+//         _channel = channel;
+//     }
+//     return self;
+// }
 
 - (void)handleMethodCall:(FlutterMethodCall *)call
                   result:(FlutterResult)result {
@@ -261,48 +278,48 @@ static NSString *const SCHEME_FILE = @"file";
 }
 
 #pragma mark - AppDelegate
+// yangpan modify
+// - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+//     return
+//         [QQApiInterface handleOpenURL:url
+//                              delegate:self] ||
+//         ([TencentOAuth CanHandleOpenURL:url] && [TencentOAuth HandleOpenURL:url]);
+// }
 
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    return
-        [QQApiInterface handleOpenURL:url
-                             delegate:self] ||
-        ([TencentOAuth CanHandleOpenURL:url] && [TencentOAuth HandleOpenURL:url]);
-}
+// - (BOOL)application:(UIApplication *)application
+//               openURL:(NSURL *)url
+//     sourceApplication:(NSString *)sourceApplication
+//            annotation:(id)annotation {
+//     return
+//         [QQApiInterface handleOpenURL:url
+//                              delegate:self] ||
+//         ([TencentOAuth CanHandleOpenURL:url] && [TencentOAuth HandleOpenURL:url]);
+// }
 
-- (BOOL)application:(UIApplication *)application
-              openURL:(NSURL *)url
-    sourceApplication:(NSString *)sourceApplication
-           annotation:(id)annotation {
-    return
-        [QQApiInterface handleOpenURL:url
-                             delegate:self] ||
-        ([TencentOAuth CanHandleOpenURL:url] && [TencentOAuth HandleOpenURL:url]);
-}
+// - (BOOL)application:(UIApplication *)application
+//             openURL:(NSURL *)url
+//             options:
+//                 (NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+//     return
+//         [QQApiInterface handleOpenURL:url
+//                              delegate:self] ||
+//         ([TencentOAuth CanHandleOpenURL:url] && [TencentOAuth HandleOpenURL:url]);
+// }
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-            options:
-                (NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
-    return
-        [QQApiInterface handleOpenURL:url
-                             delegate:self] ||
-        ([TencentOAuth CanHandleOpenURL:url] && [TencentOAuth HandleOpenURL:url]);
-}
-
-- (BOOL)application:(UIApplication *)application
-    continueUserActivity:(NSUserActivity *)userActivity
-      restorationHandler:(void (^)(NSArray *_Nonnull))restorationHandler {
-    if ([userActivity.activityType
-            isEqualToString:NSUserActivityTypeBrowsingWeb]) {
-        NSURL *url = userActivity.webpageURL;
-        if (url != nil) {
-            return [QQApiInterface handleOpenUniversallink:url delegate:self] ||
-                   ([TencentOAuth CanHandleUniversalLink:url] &&
-                    [TencentOAuth HandleUniversalLink:url]);
-        }
-    }
-    return NO;
-}
+// - (BOOL)application:(UIApplication *)application
+//     continueUserActivity:(NSUserActivity *)userActivity
+//       restorationHandler:(void (^)(NSArray *_Nonnull))restorationHandler {
+//     if ([userActivity.activityType
+//             isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+//         NSURL *url = userActivity.webpageURL;
+//         if (url != nil) {
+//             return [QQApiInterface handleOpenUniversallink:url delegate:self] ||
+//                    ([TencentOAuth CanHandleUniversalLink:url] &&
+//                     [TencentOAuth HandleUniversalLink:url]);
+//         }
+//     }
+//     return NO;
+// }
 
 #pragma mark - TencentSessionDelegate
 
