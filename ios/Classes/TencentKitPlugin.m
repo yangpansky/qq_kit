@@ -344,7 +344,7 @@ static NSString *const SCHEME_FILE = @"file";
         [dictionary setValue:[NSNumber numberWithInt:RET_COMMON]
                       forKey:ARGUMENT_KEY_RESULT_RET];
     }
-    [_channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
+    [self._channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
 }
 
 - (void)tencentDidNotLogin:(BOOL)cancelled {
@@ -358,7 +358,7 @@ static NSString *const SCHEME_FILE = @"file";
         [dictionary setValue:[NSNumber numberWithInt:RET_COMMON]
                       forKey:ARGUMENT_KEY_RESULT_RET];
     }
-    [_channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
+    [self._channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
 }
 
 - (void)tencentDidNotNetWork {
@@ -366,7 +366,7 @@ static NSString *const SCHEME_FILE = @"file";
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setValue:[NSNumber numberWithInt:RET_COMMON]
                   forKey:ARGUMENT_KEY_RESULT_RET];
-    [_channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
+    [self._channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
 }
 
 #pragma mark - QQApiInterfaceDelegate
@@ -397,7 +397,7 @@ static NSString *const SCHEME_FILE = @"file";
                 [dictionary setValue:errorMsg forKey:ARGUMENT_KEY_RESULT_MSG];
                 break;
         }
-        [_channel invokeMethod:METHOD_ONSHARERESP arguments:dictionary];
+        [self._channel invokeMethod:METHOD_ONSHARERESP arguments:dictionary];
     }
 }
 
