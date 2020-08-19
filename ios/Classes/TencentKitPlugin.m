@@ -279,23 +279,6 @@ static NSString *const SCHEME_FILE = @"file";
 
 #pragma mark - AppDelegate
 // yangpan modify
-// - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-//     return
-//         [QQApiInterface handleOpenURL:url
-//                              delegate:self] ||
-//         ([TencentOAuth CanHandleOpenURL:url] && [TencentOAuth HandleOpenURL:url]);
-// }
-
-// - (BOOL)application:(UIApplication *)application
-//               openURL:(NSURL *)url
-//     sourceApplication:(NSString *)sourceApplication
-//            annotation:(id)annotation {
-//     return
-//         [QQApiInterface handleOpenURL:url
-//                              delegate:self] ||
-//         ([TencentOAuth CanHandleOpenURL:url] && [TencentOAuth HandleOpenURL:url]);
-// }
-
 // - (BOOL)application:(UIApplication *)application
 //             openURL:(NSURL *)url
 //             options:
