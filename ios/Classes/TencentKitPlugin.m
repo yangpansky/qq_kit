@@ -19,7 +19,7 @@ enum TencentRetCode {
 
 @interface TencentKitPlugin () <TencentSessionDelegate, QQApiInterfaceDelegate>
 // yangpan modify
-@property (nonatomic,strong) FlutterMethodChannel *_channel;
+@property (nonatomic,strong) FlutterMethodChannel *channel;
 @end
 
 @implementation TencentKitPlugin {
@@ -36,7 +36,7 @@ enum TencentRetCode {
     // TencentKitPlugin *instance =
     //     [[TencentKitPlugin alloc] initWithChannel:channel];
     TencentKitPlugin *instance = [self.class sharedInstance];
-    instance._channel = channel;
+    instance.channel = channel;
     [registrar addApplicationDelegate:instance];
     [registrar addMethodCallDelegate:instance channel:channel];
 }
@@ -327,7 +327,7 @@ static NSString *const SCHEME_FILE = @"file";
         [dictionary setValue:[NSNumber numberWithInt:RET_COMMON]
                       forKey:ARGUMENT_KEY_RESULT_RET];
     }
-    [self._channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
+    [_channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
 }
 
 - (void)tencentDidNotLogin:(BOOL)cancelled {
@@ -341,7 +341,7 @@ static NSString *const SCHEME_FILE = @"file";
         [dictionary setValue:[NSNumber numberWithInt:RET_COMMON]
                       forKey:ARGUMENT_KEY_RESULT_RET];
     }
-    [self._channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
+    [_channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
 }
 
 - (void)tencentDidNotNetWork {
@@ -349,7 +349,7 @@ static NSString *const SCHEME_FILE = @"file";
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setValue:[NSNumber numberWithInt:RET_COMMON]
                   forKey:ARGUMENT_KEY_RESULT_RET];
-    [self._channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
+    [_channel invokeMethod:METHOD_ONLOGINRESP arguments:dictionary];
 }
 
 #pragma mark - QQApiInterfaceDelegate
@@ -380,7 +380,7 @@ static NSString *const SCHEME_FILE = @"file";
                 [dictionary setValue:errorMsg forKey:ARGUMENT_KEY_RESULT_MSG];
                 break;
         }
-        [self._channel invokeMethod:METHOD_ONSHARERESP arguments:dictionary];
+        [_channel invokeMethod:METHOD_ONSHARERESP arguments:dictionary];
     }
 }
 
