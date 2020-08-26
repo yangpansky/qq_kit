@@ -71,7 +71,6 @@ public class TencentKit implements MethodChannel.MethodCallHandler, PluginRegist
     private static final String METHOD_ONSHARERESP = "onShareResp";
 
     private static final String ARGUMENT_KEY_APPID = "appId";
-    //    private static final String ARGUMENT_KEY_UNIVERSALLINK = "universalLink";
     private static final String ARGUMENT_KEY_SCOPE = "scope";
     private static final String ARGUMENT_KEY_SCENE = "scene";
     private static final String ARGUMENT_KEY_TITLE = "title";
@@ -136,21 +135,10 @@ public class TencentKit implements MethodChannel.MethodCallHandler, PluginRegist
     public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
         if (METHOD_REGISTERAPP.equals(call.method)) {
             final String appId = call.argument(ARGUMENT_KEY_APPID);
-//            final String universalLink = call.argument(ARGUMENT_KEY_UNIVERSALLINK);
-            String authority = null;
-            try {
-                ProviderInfo providerInfo = applicationContext.getPackageManager().getProviderInfo(new ComponentName(applicationContext, TencentKitFileProvider.class), PackageManager.MATCH_DEFAULT_ONLY);
-                authority = providerInfo.authority;
-            } catch (PackageManager.NameNotFoundException e) {
-            }
-            if (!TextUtils.isEmpty(authority)) {
-                tencent = Tencent.createInstance(appId, applicationContext, authority);
-            } else {
-                tencent = Tencent.createInstance(appId, applicationContext);
-            }
+            tencent = Tencent.createInstance(appId, applicationContext);
             result.success(null);
         } else if (METHOD_ISQQINSTALLED.equals(call.method)) {
-            result.success(isAppInstalled(applicationContext, "com.tencent.mobileqq"));
+            result.success(tencent.isQQInstalled(applicationContext));
         } else if (METHOD_ISTIMINSTALLED.equals(call.method)) {
             result.success(isAppInstalled(applicationContext, "com.tencent.tim"));
         } else if (METHOD_LOGIN.equals(call.method)) {
