@@ -23,6 +23,7 @@ public class TencentKitPlugin implements FlutterPlugin, ActivityAware {
     public static void registerWith(PluginRegistry.Registrar registrar) {
         TencentKit tencentKit = new TencentKit(registrar.context(), registrar.activity());
         registrar.addActivityResultListener(tencentKit);
+        tencentKit.setApplicationContext(registrar.context());
         tencentKit.startListening(registrar.messenger());
     }
 
